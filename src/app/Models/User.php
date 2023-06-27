@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Builder\UserBuilder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -49,5 +50,22 @@ class User extends Authenticatable
     public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class);
+    }
+
+    /**
+     * @return UserBuilder<User>
+     */
+    public static function query(): UserBuilder
+    {
+        return parent::query();
+    }
+
+    /**
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return UserBuilder<User>
+     */
+    public function newEloquentBuilder($query): UserBuilder
+    {
+        return new UserBuilder($query);
     }
 }
